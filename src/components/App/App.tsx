@@ -6,7 +6,7 @@ import { fetchNotes, deleteNote, createNote } from "../../services/noteService";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
-import type { NotesResponse } from "../../types/note";
+import type { NotesResponse } from "../../types/api";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchBox } from "../SearchBox/SearchBox";
 import Loader from "../Loader/Loader";
