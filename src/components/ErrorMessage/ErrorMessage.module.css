@@ -1,0 +1,15 @@
+.errorWrapper {
+  background-color: #fff2f0; /* Легкий червоний фон */
+  border: 1px solid #ffccc7;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 400px;
+  text-align: center;
+}
+
+.errorText {
+  color: #ff4d4f; /* Яскравий червоний для помилки */
+  margin: 0;
+  font-weight: 500;
+}
