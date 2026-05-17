@@ -54,7 +54,6 @@ const NoteForm: React.FC<NoteFormProps> = ({
   const handleSubmit = (values: FormValues) => {
     console.log("Form values:", values);
     mutation.mutate(values);
-    onClose();
   };
 
   return (

@@ -51,30 +51,57 @@ function App() {
           />
         )}
         <div className={css.filters}>
-          <button className={css.filterBtn} onClick={() => setFilter(null)}>
+          <button
+            className={css.filterBtn}
+            onClick={() => {
+              setFilter(null);
+              setPage(1);
+            }}
+          >
             All
           </button>
-          <button className={css.filterBtn} onClick={() => setFilter("Todo")}>
+          <button
+            className={css.filterBtn}
+            onClick={() => {
+              setFilter("Todo");
+              setPage(1);
+            }}
+          >
             Todo
           </button>
-          <button className={css.filterBtn} onClick={() => setFilter("Work")}>
+          <button
+            className={css.filterBtn}
+            onClick={() => {
+              setFilter("Work");
+              setPage(1);
+            }}
+          >
             Work
           </button>
           <button
             className={css.filterBtn}
-            onClick={() => setFilter("Personal")}
+            onClick={() => {
+              setFilter("Personal");
+              setPage(1);
+            }}
           >
             Personal
           </button>
           <button
             className={css.filterBtn}
-            onClick={() => setFilter("Meeting")}
+            onClick={() => {
+              setFilter("Meeting");
+              setPage(1);
+            }}
           >
             Meeting
           </button>
           <button
             className={css.filterBtn}
-            onClick={() => setFilter("Shopping")}
+            onClick={() => {
+              setFilter("Shopping");
+              setPage(1);
+            }}
           >
             Shopping
           </button>
