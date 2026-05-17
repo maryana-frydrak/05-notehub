@@ -1,8 +1,8 @@
 import css from "./App.module.css";
 import NoteList from "../NoteList/NoteList";
 import { useState } from "react";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { fetchNotes, deleteNote, createNote } from "../../services/noteService";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNotes } from "../../services/noteService";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
@@ -14,7 +14,6 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -22,6 +21,7 @@ function App() {
   const { data, isLoading, isError } = useQuery<NotesResponse>({
     queryKey: ["notes", page, filter, search],
     queryFn: () => fetchNotes(page, 10, filter, search),
+    placeholderData: (previousData) => previousData,
   });
 
   const totalPages = data?.totalPages || 0;
@@ -31,23 +31,6 @@ function App() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const createMutation = useMutation({
-    mutationFn: createNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["notes"],
-      });
-      setIsModalOpen(false);
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
 
   const handleSearch = useDebouncedCallback((value: string) => {
     setSearch(value);
@@ -111,19 +94,13 @@ function App() {
               No notes found. Try changing your search or filters!
             </p>
           ) : (
-            <NoteList
-              notes={notes}
-              onDelete={(id) => deleteMutation.mutate(id)}
-            />
+            <NoteList notes={notes} />
           )}
         </>
       )}
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <NoteForm
-            onClose={closeModal}
-            onSubmit={(values) => createMutation.mutate(values)}
-          />
+          <NoteForm onClose={closeModal} />
         </Modal>
       )}
       <Toaster position="top-right" reverseOrder={false} />

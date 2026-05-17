@@ -17,7 +17,11 @@ interface PaginationProps {
   onPageChange: (selectedItem: { selected: number }) => void;
 }
 
-const Pagination = ({ pageCount, onPageChange }: PaginationProps) => {
+const Pagination = ({
+  pageCount,
+  currentPage,
+  onPageChange,
+}: PaginationProps) => {
   return (
     <ReactPaginate
       breakLabel="..."
@@ -26,6 +30,7 @@ const Pagination = ({ pageCount, onPageChange }: PaginationProps) => {
       pageRangeDisplayed={3}
       marginPagesDisplayed={2}
       pageCount={pageCount}
+      forcePage={currentPage - 1}
       previousLabel="< previous"
       containerClassName={css.pagination}
       activeClassName={css.active}

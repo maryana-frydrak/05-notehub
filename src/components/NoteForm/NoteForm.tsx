@@ -1,13 +1,16 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import css from "./NoteForm.module.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNote } from "../../services/noteService";
+import toast from "react-hot-toast";
 
 const NoteSchema = Yup.object().shape({
   title: Yup.string()
     .min(3, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  content: Yup.string().max(500, "Too Long!").required("Required"),
+  content: Yup.string().max(500, "Too Long!"),
   tag: Yup.string()
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
     .required("Required"),
@@ -21,19 +24,36 @@ interface FormValues {
 
 interface NoteFormProps {
   onClose: () => void;
-  onSubmit: (values: FormValues) => void;
 }
 
-const NoteForm = ({ onClose, onSubmit }: NoteFormProps) => {
-  const initialValues = {
-    title: "",
-    content: "",
-    tag: "Todo",
-  };
+const initialValues = {
+  title: "",
+  content: "",
+  tag: "Personal",
+};
+
+const NoteForm: React.FC<NoteFormProps> = ({
+  onClose,
+}: {
+  onClose: () => void;
+}) => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      toast.success("Note created successfully!");
+      onClose();
+    },
+    onError: () => {
+      toast.error("Failed to create note.");
+    },
+  });
 
   const handleSubmit = (values: FormValues) => {
     console.log("Form values:", values);
-    onSubmit(values);
+    mutation.mutate(values);
     onClose();
   };
 
